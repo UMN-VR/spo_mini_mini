@@ -1,4 +1,4 @@
-Note: development for this project was haulted in November 2020 to respect my NDA with my employer.
+Note: This is a fork of the original Spot Mini Mini repository. The original repository can be found [here](https://github.com/OpenQuadruped/spot_mini_mini).
 
 ## Spot Mini Mini OpenAI Gym Environment
 
@@ -56,6 +56,7 @@ Table of Contents
      * [Assembly & Calibration](https://github.com/moribots/spot_mini_mini/tree/spot/spot_real/Calibration.md)
   * [Citing Spot Mini Mini](#citing-spot-mini-mini)
   * [Credits](#credits)
+  
 
 ### Kinematics
 
@@ -127,6 +128,18 @@ Yaw logic based on [4-wheel steering car](http://www.inase.org/library/2014/sant
 * OpenCV
 * Scipy
 * Numpy
+
+
+### Install Dependencies
+#### Setup Virtual Environment
+Create and activate virtual environment. Add my `requirements.txt` file to the `spot_mini_mini` repo.
+```bash
+py -3.8 -m venv env3_8
+.\env3_8\Scripts\activate
+pip install -r .\requirements.txt
+```
+
+
 
 ### Joystick Control with ROS
 First, you're going to need a joystick (okay, not really, but it's more fun if you have one).
