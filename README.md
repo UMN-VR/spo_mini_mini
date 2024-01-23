@@ -133,10 +133,30 @@ Yaw logic based on [4-wheel steering car](http://www.inase.org/library/2014/sant
 ### Install Dependencies
 #### Setup Virtual Environment
 Create and activate virtual environment. Add my `requirements.txt` file to the `spot_mini_mini` repo.
+
+##### Update apt
 ```bash
-py -3.8 -m venv env3_8
-.\env3_8\Scripts\activate
-pip install -r .\requirements.txt
+sudo apt update
+```
+##### instal
+```bash
+sudo apt install python3-pip
+```
+
+```bash
+sudoapt install python3.10-venv
+```
+
+```bash
+python3 -m venv spot_mini_env
+```
+
+```bash
+source spot_mini_env/bin/activate
+```
+
+```bash
+python3 -m pip install -r spot_mini_mini/requirements.txt
 ```
 
 
