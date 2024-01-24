@@ -31,6 +31,9 @@
   <material name="blue">
     <color rgba="0.2 0.2 0.8 1"/>
   </material>
+  <material name="green">
+    <color rgba="0.2 0.8 0.2 1"/>
+  </material>
   <!-- Left Leg: prefix is front or rear -->
   <!--   <xacro:macro name="LeftLeg" params="prefix reflect">
     <link name="${prefix}_Left_Leg">
@@ -148,11 +151,57 @@
     </inertial>
   </link>
   <!-- m to mm -->
-  <link name="m5paper2">
+  <link name="rpi_lidar">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.15 0.035 -0.022"/>
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/lidar.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.048 0.145 0.026"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="0.000723366666667" ixy="0" ixz="0" iyx="0" iyy="9.93333333333e-05" iyz="0" izx="0" izy="0" izz="0.000777633333333"/>
+    </inertial>
+  </link>
+
+    <!-- m to mm -->
+  <link name="rpi_5">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.15 0.035 -0.022"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RPI5.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.048 0.145 0.026"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="0.000723366666667" ixy="0" ixz="0" iyx="0" iyy="9.93333333333e-05" iyz="0" izx="0" izy="0" izz="0.000777633333333"/>
+    </inertial>
+  </link>
+
+    <!-- m to mm -->
+  <link name="oak_d_lite">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.15 0.035 -0.022"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/OAKD_LITE.stl" scale="1 1 1"/>
       </geometry>
       <material name="black"/>
     </visual>
@@ -923,10 +972,20 @@
     <parent link="base_link"/>
     <child link="m5paper"/>
   </joint>
-  <joint name="base_m5paper2" type="fixed">
+  <joint name="base_rpi_lidar" type="fixed">
     <origin rpy="0 0 0" xyz="-0.01 0 -0.0225"/>
     <parent link="base_link"/>
-    <child link="m5paper2"/>
+    <child link="rpi_lidar"/>
+  </joint>
+  <joint name="base_rpi_5" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.01 0 -0.0225"/>
+    <parent link="base_link"/>
+    <child link="rpi_5"/>
+  </joint>
+  <joint name="base_oakd_lite" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.01 0 -0.0225"/>
+    <parent link="base_link"/>
+    <child link="oak_d_lite"/>
   </joint>
 
   <joint name="base_left" type="fixed">
