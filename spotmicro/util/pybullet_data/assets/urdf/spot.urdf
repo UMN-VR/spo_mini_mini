@@ -25,6 +25,9 @@
   <material name="yellow">
     <color rgba="1.0 1.0 0.0 1"/>
   </material>
+  <material name="cgray">
+    <color rgba="0.6 0.6 0.6 0.5"/>
+  </material>
   <!-- Left Leg: prefix is front or rear -->
   <!--   <xacro:macro name="LeftLeg" params="prefix reflect">
     <link name="${prefix}_Left_Leg">
@@ -148,7 +151,8 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/lidar.stl" scale="1 1 1"/>
       </geometry>
-      <material name="grey"/>
+      
+      <material name="black"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
@@ -171,7 +175,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/Chassis_Left_Side.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="cgray"/>
     </visual>
     <collision>
       <origin rpy="0 1.57079632679 -1.57079632679" xyz="0 0 0"/>
@@ -193,7 +197,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/Chassis_Right_Side.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="cgray"/>
     </visual>
     <collision>
       <origin rpy="0 1.57079632679 1.57079632679" xyz="0 0 0"/>
@@ -332,7 +336,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/LEFT_UPPER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="maroon"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 0.02 -0.05"/>
@@ -361,12 +365,12 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/LEFT_LOWER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="yellow"/>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.06"/>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.04"/>
       <geometry>
-        <box size="0.035 0.035 0.12"/>
+        <box size="0.035 0.035 0.10"/>
       </geometry>
     </collision>
     <inertial>
@@ -446,7 +450,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/LEFT_UPPER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="maroon"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 0.02 -0.05"/>
@@ -478,9 +482,9 @@
       <material name="yellow"/>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.06"/>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.04"/>
       <geometry>
-        <box size="0.035 0.035 0.12"/>
+        <box size="0.035 0.035 0.10"/>
       </geometry>
     </collision>
     <inertial>
@@ -560,7 +564,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_UPPER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="maroon"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 -0.02 -0.05"/>
@@ -589,12 +593,12 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_LOWER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="yellow"/>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.06"/>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.04"/>
       <geometry>
-        <box size="0.035 0.035 0.12"/>
+        <box size="0.035 0.035 0.10"/>
       </geometry>
     </collision>
     <inertial>
@@ -674,7 +678,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_UPPER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="maroon"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 -0.02 -0.05"/>
@@ -703,12 +707,12 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_LOWER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="yellow"/>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.06"/>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.04"/>
       <geometry>
-        <box size="0.035 0.035 0.12"/>
+        <box size="0.035 0.035 0.10"/>
       </geometry>
     </collision>
     <inertial>
