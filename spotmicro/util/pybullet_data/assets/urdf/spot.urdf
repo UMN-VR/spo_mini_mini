@@ -219,6 +219,29 @@
     </inertial>
   </link>
 
+      <!-- m to mm -->
+  <link name="insta360">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.15 0.035 -0.022"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/INSTA360.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.048 0.145 0.026"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.1"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="0.000723366666667" ixy="0" ixz="0" iyx="0" iyy="9.93333333333e-05" iyz="0" izx="0" izy="0" izz="0.000777633333333"/>
+    </inertial>
+  </link>
+
   <!-- m to mm -->
   <link name="chassis_left">
     <visual>
@@ -710,7 +733,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_CFP.stl" scale="1 1 1"/>
       </geometry>
-      <material name="blue"/>
+      <material name="CFP"/>
     </visual>
     <inertial>
       <mass value="0.005"/>
@@ -751,6 +774,22 @@
       <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
     </inertial>
   </link>
+
+  <link name="front_right_upper_CFP">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_UPPER_CFP.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
   
   <joint name="front_right_leg_foot" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
@@ -780,6 +819,12 @@
     <origin rpy="0 0 0" xyz="-0.005 -0.01 -0.235"/>
     <parent link="front_right_upper_leg"/>
     <child link="front_right_upper_servo"/>
+  </joint>
+
+  <joint name="front_right_upper_CFP" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.005 -0.01 -0.235"/>
+    <parent link="front_right_upper_leg"/>
+    <child link="front_right_upper_CFP"/>
   </joint>
 
   <link name="back_right_hip">
@@ -986,6 +1031,11 @@
     <origin rpy="0 0 0" xyz="-0.01 0 -0.0225"/>
     <parent link="base_link"/>
     <child link="oak_d_lite"/>
+  </joint>
+    <joint name="base_insta360" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.01 0 -0.0225"/>
+    <parent link="base_link"/>
+    <child link="insta360"/>
   </joint>
 
   <joint name="base_left" type="fixed">
