@@ -640,10 +640,37 @@
       <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
     </inertial>
   </link>
+    <link name="front_right_foot_IMU">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_IMU.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_IMU.stl" scale="1 1 1"/>
+      </geometry>
+      <contact_coefficients mu="10.1"/>
+    </collision>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
   <joint name="front_right_leg_foot" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
     <parent link="front_right_lower_leg"/>
     <child link="front_right_foot"/>
+  </joint>
+    <joint name="front_right_leg_foot_IMU" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
+    <parent link="front_right_lower_leg"/>
+    <child link="front_right_foot_IMU"/>
   </joint>
   <link name="back_right_hip">
     <visual>
