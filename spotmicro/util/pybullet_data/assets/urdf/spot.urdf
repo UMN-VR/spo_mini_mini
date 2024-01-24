@@ -7,7 +7,7 @@
   <material name="maroon">
     <color rgba="0.5 0.2 0.2 1"/>
   </material>
-  <material name="blue">
+  <material name="lblue">
     <color rgba="0.1 0.1 0.8 0.9"/>
   </material>
   <material name="orange">
@@ -86,7 +86,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/Battery.stl" scale="1 1 1"/>
       </geometry>
-      <material name="blue"/>
+      <material name="lblue"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
@@ -154,7 +154,7 @@
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/lidar.stl" scale="1 1 1"/>
       </geometry>
-      <material name="grey"/>
+      <material name="black"/>
     </visual>
     <collision>
       <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
@@ -640,7 +640,7 @@
       <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
     </inertial>
   </link>
-    <link name="front_right_foot_IMU">
+  <link name="front_right_foot_IMU">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
       <geometry>
@@ -648,13 +648,6 @@
       </geometry>
       <material name="blue"/>
     </visual>
-    <collision>
-      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
-      <geometry>
-        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_IMU.stl" scale="1 1 1"/>
-      </geometry>
-      <contact_coefficients mu="10.1"/>
-    </collision>
     <inertial>
       <mass value="0.005"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -662,16 +655,84 @@
       <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
     </inertial>
   </link>
+  <link name="front_right_foot_CFP">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_CFP.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
+  
+  <link name="front_right_foot_servo">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_LOWER_SERVO.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
+  
+  <link name="front_right_upper_servo">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_UPPER_SERVO.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
+  
   <joint name="front_right_leg_foot" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
     <parent link="front_right_lower_leg"/>
     <child link="front_right_foot"/>
   </joint>
-    <joint name="front_right_leg_foot_IMU" type="fixed">
+
+  <joint name="front_right_leg_foot_IMU" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
     <parent link="front_right_lower_leg"/>
     <child link="front_right_foot_IMU"/>
   </joint>
+
+  <joint name="front_right_leg_foot_CFP" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
+    <parent link="front_right_lower_leg"/>
+    <child link="front_right_foot_CFP"/>
+  </joint>
+
+  <joint name="front_right_leg_foot_servo" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
+    <parent link="front_right_lower_leg"/>
+    <child link="front_right_foot_servo"/>
+  </joint>
+  
+  <joint name="front_right_leg_upper_servo" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.005 -0.01 -0.235"/>
+    <parent link="front_right_upper_leg"/>
+    <child link="front_right_upper_servo"/>
+  </joint>
+
   <link name="back_right_hip">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.25 0.074 -0.067"/>
@@ -789,13 +850,36 @@
       </geometry>
       <material name="blue"/>
     </visual>
-    <collision>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
+  <link name="back_right_foot_CFP">
+    <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
       <geometry>
-        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_IMU.stl" scale="1 1 1"/>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_FOOT_CFP.stl" scale="1 1 1"/>
       </geometry>
-      <contact_coefficients mu="10.1"/>
-    </collision>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="0.005"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <!-- Inertial Axes -->
+      <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
+    </inertial>
+  </link>
+  <link name="back_right_foot_servo">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
+      <geometry>
+        <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_LOWER_SERVO.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
     <inertial>
       <mass value="0.005"/>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -812,6 +896,16 @@
     <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
     <parent link="back_right_lower_leg"/>
     <child link="back_right_foot_IMU"/>
+  </joint>
+  <joint name="back_right_leg_foot_CFP" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
+    <parent link="back_right_lower_leg"/>
+    <child link="back_right_foot_CFP"/>
+  </joint>
+  <joint name="back_right_leg_foot_servo" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 -0.1265"/>
+    <parent link="back_right_lower_leg"/>
+    <child link="back_right_foot_servo"/>
   </joint>
   <joint name="base_battery" type="fixed">
     <origin rpy="0 0 0" xyz="-0.01 0 -0.0225"/>
