@@ -3,13 +3,12 @@
   "dockerFile": "Dockerfile",
   "runArgs": [
     "--privileged",
-    "--network=host"
+    "--network=host",
+    "-e", "DISPLAY=1",
+    "-v", "/tmp/.X11-unix:/tmp/.X11-unix:ro"
   ],
-  "containerEnv": {
-    "DISPLAY": "unix:0"
-  },
-  "workspaceMount": "source=${localWorkspaceFolder},target=/${localWorkspaceFolderBasename},type=bind",
-  "workspaceFolder": "/${localWorkspaceFolderBasename}",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/catkin_ws/src,type=bind",
+  "workspaceFolder": "/catkin_ws/home/vscode/src",
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.bash_history,target=/home/vscode/.bash_history,type=bind"
   ]

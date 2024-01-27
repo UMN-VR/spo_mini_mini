@@ -1,15 +1,36 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  <material name="orange">
-    <color rgba="1.0 0.5 0.0 1"/>
-  </material>
-  <material name="black">
-    <color rgba="0.1 0.1 0.1 1"/>
-  </material>
-  <material name="grey">
-    <color rgba="0.6 0.6 0.6 1"/>
-  </material>
+<material name="maroon">
+  <color rgba="0.5 0.2 0.2 1"/>
+</material>
+<material name="lblue">
+  <color rgba="0.1 0.1 0.8 0.9"/>
+</material>
+<material name="orange">
+  <color rgba="1.0 0.5 0.0 1"/>
+</material>
+<material name="black">
+  <color rgba="0.1 0.1 0.1 1"/>
+</material>
+<material name="grey">
+  <color rgba="0.6 0.6 0.6 1"/>
+</material>
+<material name="white">
+  <color rgba="1.0 1.0 1.0 1"/>
+</material>
+<material name="yellow">
+  <color rgba="1.0 1.0 0.0 1"/>
+</material>
+<material name="cgray">
+  <color rgba="0.6 0.6 0.6 0.5"/>
+</material>
+<material name="blue">
+  <color rgba="0.2 0.2 0.8 1"/>
+</material>
+<material name="green">
+  <color rgba="0.2 0.8 0.2 1"/>
+</material>
 
   <xacro:macro name="rev_joint" params="name type axis_xyz origin_rpy origin_xyz parent child effort velocity damping friction upper lower">
     <joint name="${name}" type="${type}">
@@ -58,7 +79,33 @@
           <material>Gazebo/Black</material>
         </xacro:if>
         <xacro:if value="${matname == 'orange'}">
-          <material>Gazebo/Orange</material>
+          <material>Gazebo/Red</material>
+        </xacro:if>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="c_less_mesh_link" params="name origin_xyz origin_rpy meshfile meshscale c_xyz matname mass i_xyz i_rpy length width height">
+    <link name="${name}">
+      <visual>
+        <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+        <geometry>
+          <mesh filename="${meshfile}" scale="${meshscale}"/>
+        </geometry>
+        <material name="${matname}"/>
+      </visual>
+
+      <inertial>
+        <mass value="${mass}" />
+        <origin rpy="${i_rpy}" xyz="${i_xyz}" /> <!-- Inertial Axes -->
+        <inertia ixx="${mass * (width * width + height * height)/12.0}" ixy="${0}" ixz="${0}" iyx="${0}" iyy="${mass * (length * length + height * height)/12.0}" iyz="${0}" izx="${0}" izy="${0}" izz="${mass * (length * length + width * width)/12.0}" />
+      </inertial>
+    </link>
+    <gazebo reference="${name}">
+        <xacro:if value="${matname == 'black'}">
+          <material>Gazebo/Black</material>
+        </xacro:if>
+        <xacro:if value="${matname == 'orange'}">
+          <material>Gazebo/Red</material>
         </xacro:if>
     </gazebo>
   </xacro:macro>
@@ -95,7 +142,7 @@
       <mu2>0.8</mu2>
       <maxVel>0.0</maxVel>
       <minDepth>0.001</minDepth>
-      <material>Gazebo/Orange</material>
+      <material>Gazebo/Red</material>
     </gazebo>
   </xacro:macro>
 
