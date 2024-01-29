@@ -6,11 +6,12 @@ from spotmicro.Kinematics.LieAlgebra import RpToTrans, TransToRp, TransInv, RPY,
 from collections import OrderedDict
 
 
+# OLD WRIST LENGTH: 0.145
 class SpotModel:
     def __init__(self,
                  shoulder_length=0.055,
                  elbow_length=0.10652,
-                 wrist_length=0.145,
+                 wrist_length=0.1065,
                  hip_x=0.23,
                  hip_y=0.075,
                  foot_x=0.23,
