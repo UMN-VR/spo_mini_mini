@@ -5,7 +5,7 @@
   <color rgba="0.5 0.2 0.2 1"/>
 </material>
 <material name="lblue">
-  <color rgba="0.1 0.1 0.8 0.9"/>
+  <color rgba="0.01 0.01 0.08 0.7"/>
 </material>
 <material name="orange">
   <color rgba="1.0 0.5 0.0 1"/>
@@ -13,7 +13,7 @@
 <material name="black">
   <color rgba="0.1 0.1 0.1 1"/>
 </material>
-<material name="grey">
+<material name="gray">
   <color rgba="0.6 0.6 0.6 1"/>
 </material>
 <material name="white">
