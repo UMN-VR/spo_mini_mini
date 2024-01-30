@@ -538,70 +538,76 @@
     <limit effort="4.0" lower="-1.04" upper="1.04" velocity="4.0"/>
     <joint_properties damping="0.0" friction="0.0"/>
   </joint>
+
+  
   <link name="front_right_upper_leg">
     <visual>
-      <origin rpy="0 0 1.57079632679" xyz="-0.252 0.12 -0.055"/>
+      <origin rpy="0 0 1.57079632679" xyz="-0.252 0.13 -0.053"/>
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_UPPER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="maroon"/>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57079632679" xyz="0 -0.02 -0.05"/>
+      <origin rpy="0 0 1.57079632679" xyz="0 -0.01 -0.038"/>
       <geometry>
         <box size="0.035 0.035 0.11"/>
       </geometry>
     </collision>
     <inertial>
       <mass value="0.13"/>
-      <origin rpy="0 0 0" xyz="-0.005 -0.0175 -0.055"/>
+      <origin rpy="0 0 0" xyz="-0.005 -0.017 -0.053"/>
       <!-- Inertial Axes -->
       <inertia ixx="0.000144354166667" ixy="0" ixz="0" iyx="0" iyy="0.000144354166667" iyz="0" izx="0" izy="0" izz="2.65416666667e-05"/>
     </inertial>
   </link>
   <gazebo reference="front_right_upper_leg">
-    <material>Gazebo/Black</material>
   </gazebo>
   <joint name="motor_front_right_upper_leg" type="revolute">
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0.0015 -0.045 -0.0087"/>
+    <origin rpy="0 0 0" xyz="0.0015 -0.045 -0.011"/>
     <parent link="front_right_hip"/>
     <child link="front_right_upper_leg"/>
     <limit effort="4.0" lower="-1.57079632679" upper="2.59" velocity="4.0"/>
     <joint_properties damping="0.0" friction="0.0"/>
   </joint>
+
+
+
+
+
   <link name="front_right_lower_leg">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.0535"/>
       <geometry>
         <mesh filename="package://mini_ros/stl/OpenQuadruped/RIGHT_LOWER_LEG.stl" scale="1 1 1"/>
       </geometry>
-      <material name="black"/>
+      <material name="yellow"/>
     </visual>
     <collision>
-      <origin rpy="0 0 1.57079632679" xyz="0 0 -0.06"/>
+      <origin rpy="0 0 1.57079632679" xyz="0 -0.01 -0.04"/>
       <geometry>
-        <box size="0.035 0.035 0.12"/>
+        <box size="0.035 0.035 0.11"/>
       </geometry>
     </collision>
     <inertial>
       <mass value="0.05"/>
       <origin rpy="0 0 0" xyz="-0.01 0 -0.06"/>
       <!-- Inertial Axes -->
-      <inertia ixx="6.51041666667e-05" ixy="0" ixz="0" iyx="0" iyy="6.51041666667e-05" iyz="0" izx="0" izy="0" izz="1.02083333333e-05"/>
+      <inertia ixx="5.55208333333e-05" ixy="0" ixz="0" iyx="0" iyy="5.55208333333e-05" iyz="0" izx="0" izy="0" izz="1.02083333333e-05"/>
     </inertial>
   </link>
   <gazebo reference="front_right_lower_leg">
-    <material>Gazebo/Black</material>
   </gazebo>
   <joint name="motor_front_right_lower_leg" type="revolute">
     <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="-0.005 -0.018 -0.109"/>
+    <origin rpy="0 0 0" xyz="-0.005 -0.002 -0.1068"/>
     <parent link="front_right_upper_leg"/>
     <child link="front_right_lower_leg"/>
     <limit effort="4.0" lower="-2.9" upper="1.57079632679" velocity="4.0"/>
     <joint_properties damping="0.0" friction="0.0"/>
   </joint>
+
   <link name="front_right_foot">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
@@ -624,6 +630,7 @@
       <inertia ixx="3.52083333333e-06" ixy="0" ixz="0" iyx="0" iyy="2.80208333333e-06" iyz="0" izx="0" izy="0" izz="2.80208333333e-06"/>
     </inertial>
   </link>
+
   <gazebo reference="front_right_foot">
     <kp>1000000.0</kp>
     <kd>1.0</kd>

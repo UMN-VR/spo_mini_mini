@@ -156,10 +156,16 @@ source spot_mini_env/bin/activate
 ```
 
 ```bash
-python3 -m pip install -r spot_mini_mini/requirements.txt
+python3.10 -m pip install -r requirements.txt
 ```
 
+```bash
+cd spot_bullet/src
+```
 
+```bash
+python3.10 ./spot_ars_eval.py -gui -a 2229
+```
 
 ### Joystick Control with ROS
 First, you're going to need a joystick (okay, not really, but it's more fun if you have one).

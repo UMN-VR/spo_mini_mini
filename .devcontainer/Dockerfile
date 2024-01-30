@@ -46,6 +46,8 @@ RUN rosdep update
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 
+
+
 # set $DISPLAY env variable to ':1'
 RUN echo "export DISPLAY=:1" >> ~/.bashrc
 
@@ -59,5 +61,7 @@ RUN mkdir -p ~/catkin_ws/src
 
 RUN sudo apt install -y ros-melodic-joint-state-publisher-gui
 
-
+#RUN source /home/vscode/catkin_ws/src/spot_mini_env/bin/activate
+# source the virtual environment 
+RUN echo "source ~/catkin_ws/src/spot_mini_env/bin/activate" >> ~/.bashrc
 
