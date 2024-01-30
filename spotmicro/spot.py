@@ -383,6 +383,11 @@ class Spot(object):
                     init_position,
                     INIT_ORIENTATION,
                     useFixedBase=self._on_rack)
+            
+            print(f"self.quadruped: {self.quadruped}")
+            u_input = input("Press Enter to continue...")
+
+
             self._BuildJointNameToIdDict()
             self._BuildUrdfIds()
             if self._remove_default_joint_damping:
