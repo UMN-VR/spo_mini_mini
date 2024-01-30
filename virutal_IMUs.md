@@ -37,7 +37,118 @@ The MPU9250 and BN085 both have additional 3-axis magnetometers, and the BNO085 
 The highlight of this project is to take the ML model that was to trained to receive the data from the IMU in the center of the robot and increase the dimensionality of the input data to include the data from an additional 6 IMUs, 4 on the tips of the legs, one in the front of the body, and one in the back of the body.
 
 ### The Virtual IMU in spot mini mini
+The virtual IMU in spot mini mini is implemented in the `spot.py` file. The function `GetObservation` is called every `step` of the simulation. The function returns the data from the IMU in the center of the robot. The data from the IMU is used to modulate the Bezier curves that characterize the robot's gait.
 
-The virtual IMU in spot mini mini is implemented in the `spot_mini_mini.py` file. The IMU is implemented as a class that is initialized with the `pybullet` client and the `spot_mini_mini` robot object. The IMU class has a `get_data()` method that returns the data from the IMU. The data from the IMU is the acceleration, angular velocity, and orientation of the IMU in the world frame.
+`spot.py`:616-710 
+```python
+    def GetObservation(self):
+        """Get the observations of minitaur.
+        It includes the angles, velocities, torques and the orientation of the base.
+        Returns:
+          The observation list. observation[0:8] are motor angles. observation[8:16]
+          are motor velocities, observation[16:24] are motor torques.
+          observation[24:28] is the orientation of the base, in quaternion form.
+          NOTE: DIVERGES FROM STOCK MINITAUR ENV. WILL LEAVE ORIGINAL COMMENTED
+          For my purpose, the observation space includes Roll and Pitch, as well as
+          acceleration and gyroscopic rate along the x,y,z axes. All of this
+          information can be collected from an onboard IMU. The reward function
+          will contain a hidden velocity reward (fwd, bwd) which cannot be measured
+          and so is not included. For spinning, the gyroscopic z rate will be used
+          as the (explicit) velocity reward.
+          This version operates without motor torques, angles and velocities. Erwin
+          Coumans' paper suggests a sparse observation space leads to higher reward
+
+          # NOTE: use True version for perfect data, or other for realistic data
+        """
+        observation = []
+        # GETTING TWIST IN BODY FRAME
+        pos = self.GetBasePosition()
+        orn = self.GetBaseOrientation()
+        roll, pitch, yaw = self._pybullet_client.getEulerFromQuaternion(
+            [orn[0], orn[1], orn[2], orn[3]])
+        # rpy = LA.RPY(roll, pitch, yaw)
+        # R, _ = LA.TransToRp(rpy)
+        # T_wb = LA.RpToTrans(R, np.array([pos[0], pos[1], pos[2]]))
+        # T_bw = LA.TransInv(T_wb)
+        # Adj_Tbw = LA.Adjoint(T_bw)
+
+        # Get Linear and Angular Twist in WORLD FRAME
+        lin_twist, ang_twist = self.GetBaseTwist()
+
+        lin_twist = np.array([lin_twist[0], lin_twist[1], lin_twist[2]])
+        ang_twist = np.array([ang_twist[0], ang_twist[1], ang_twist[2]])
+
+        # Vw = np.concatenate((ang_twist, lin_twist))
+        # Vb = np.dot(Adj_Tbw, Vw)
+
+        # roll, pitch, _ = self._pybullet_client.getEulerFromQuaternion(
+        #     [orn[0], orn[1], orn[2], orn[3]])
+
+        # # Get linear accelerations
+        # lin_twist = -Vb[3:]
+        # ang_twist = Vb[:3]
+        lin_acc = lin_twist - self.prev_lin_twist
+        if lin_acc.all() == 0.0:
+            lin_acc = self.prev_lin_acc
+        self.prev_lin_acc = lin_acc
+        # print("LIN TWIST: ", lin_twist)
+        self.prev_lin_twist = lin_twist
+        self.prev_ang_twist = ang_twist
+
+        # Get Contacts
+        CONTACT = list(self._pybullet_client.getContactPoints(self.quadruped))
+
+        FLC = 0
+        FRC = 0
+        BLC = 0
+        BRC = 0
+
+        if len(CONTACT) > 0:
+            for i in range(len(CONTACT)):
+                Contact_Link_Index = CONTACT[i][3]
+                if Contact_Link_Index == self._foot_id_list[0]:
+                    FLC = 1
+                    # print("FL CONTACT")
+                if Contact_Link_Index == self._foot_id_list[1]:
+                    FRC = 1
+                    # print("FR CONTACT")
+                if Contact_Link_Index == self._foot_id_list[2]:
+                    BLC = 1
+                    # print("BL CONTACT")
+                if Contact_Link_Index == self._foot_id_list[3]:
+                    BRC = 1
+                    # print("BR CONTACT")
+        # order: roll, pitch, gyro(x,y,z), acc(x, y, z)
+        observation.append(roll)
+        observation.append(pitch)
+        observation.extend(list(ang_twist))
+        observation.extend(list(lin_acc))
+        # Control Input
+        # observation.append(self.StepLength)
+        # observation.append(self.StepVelocity)
+        # observation.append(self.LateralFraction)
+        # observation.append(self.YawRate)
+        observation.extend(self.LegPhases)
+        if self.contacts:
+            observation.append(FLC)
+            observation.append(FRC)
+            observation.append(BLC)
+            observation.append(BRC)
+        # print("CONTACTS: {}  {}  {}  {}".format(FLC, FRC, BLC, BRC))
+        return observation
+
+```
+Two functions are called by `GetObservation` to get the linear and angular twist of the robot. 
+
+
+```python
+orn = self.GetBaseOrientation()
+
+```
+
+```python
+roll, pitch, yaw = self._pybullet_client.getEulerFromQuaternion([orn[0], orn[1], orn[2], orn[3]])
+```
+
 
 ### Real vs Virtual IMU
