@@ -4,7 +4,11 @@
   "runArgs": [
     "--privileged",
     "--network=host",
-    "-e", "DISPLAY=1",
+    "-e","DISPLAY=:1",
+    "-e","NVIDIA_VISIBLE_DEVICES=all",
+    "-e","NVIDIA_DRIVER_CAPABILITIES=all",
+    "--gpus","all",
+    "--runtime=nvidia",
     "-v", "/tmp/.X11-unix:/tmp/.X11-unix:ro"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/catkin_ws/src,type=bind",
