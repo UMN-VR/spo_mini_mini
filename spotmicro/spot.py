@@ -385,7 +385,7 @@ class Spot(object):
                     useFixedBase=self._on_rack)
             
             print(f"self.quadruped: {self.quadruped}")
-            u_input = input("Press Enter to continue...")
+            #u_input = input("Press Enter to continue...")
 
 
             self._BuildJointNameToIdDict()

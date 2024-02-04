@@ -18,12 +18,13 @@ import time
 
 textureId = -1
 
+original = -1
 useProgrammatic = 0
 useTerrainFromPNG = 1
 useDeepLocoCSV = 2
 updateHeightfield = False
 
-heightfieldSource = useProgrammatic
+heightfieldSource = original
 numHeightfieldRows = 256
 numHeightfieldColumns = 256
 import random
@@ -43,6 +44,25 @@ class HeightField():
         env.pybullet_client.configureDebugVisualizer(
             env.pybullet_client.COV_ENABLE_RENDERING, 0)
         heightPerturbationRange = heightPerturbationRange
+
+        if heightfieldSource == original:
+            numHeightfieldRows = 256
+            numHeightfieldColumns = 256
+            heightfieldData = [0]*numHeightfieldRows*numHeightfieldColumns 
+            for j in range (int(numHeightfieldColumns/2)):
+                for i in range (int(numHeightfieldRows/2) ):
+                    height = random.uniform(0,heightPerturbationRange)
+                    heightfieldData[2*i+2*j*numHeightfieldRows]=height
+                    heightfieldData[2*i+1+2*j*numHeightfieldRows]=height
+                    heightfieldData[2*i+(2*j+1)*numHeightfieldRows]=height
+                    heightfieldData[2*i+1+(2*j+1)*numHeightfieldRows]=height
+                
+                
+            terrainShape = p.createCollisionShape(shapeType = p.GEOM_HEIGHTFIELD, meshScale=[.05,.05,1], heightfieldTextureScaling=(numHeightfieldRows-1)/2, heightfieldData=heightfieldData, numHeightfieldRows=numHeightfieldRows, numHeightfieldColumns=numHeightfieldColumns)
+            terrain  = p.createMultiBody(0, terrainShape)
+            p.resetBasePositionAndOrientation(terrain,[0,0,0], [0,0,0,1])
+
+
         if heightfieldSource == useProgrammatic:
             for j in range(int(numHeightfieldColumns / 2)):
                 for i in range(int(numHeightfieldRows / 2)):
@@ -56,13 +76,18 @@ class HeightField():
                     self.heightfieldData[2 * i + 1 + (2 * j + 1) *
                                          numHeightfieldRows] = height
 
-            terrainShape = env.pybullet_client.createCollisionShape(
+            # terrainShape = env.pybullet_client.createCollisionShape(
+            #     shapeType=env.pybullet_client.GEOM_HEIGHTFIELD,
+            #     meshScale=[.07, .07, 1.6],
+            #     heightfieldTextureScaling=(numHeightfieldRows - 1) / 2,
+            #     heightfieldData=self.heightfieldData,
+            #     numHeightfieldRows=numHeightfieldRows,
+            #     numHeightfieldColumns=numHeightfieldColumns)
+            
+            terrainShape = env.pybullet_client.createVisualShape(
                 shapeType=env.pybullet_client.GEOM_HEIGHTFIELD,
-                meshScale=[.07, .07, 1.6],
-                heightfieldTextureScaling=(numHeightfieldRows - 1) / 2,
-                heightfieldData=self.heightfieldData,
-                numHeightfieldRows=numHeightfieldRows,
-                numHeightfieldColumns=numHeightfieldColumns)
+                meshScale=[.07, .07, 1.6])
+            
             terrain = env.pybullet_client.createMultiBody(0, terrainShape)
             env.pybullet_client.resetBasePositionAndOrientation(
                 terrain, [0, 0, 0.0], [0, 0, 0, 1])

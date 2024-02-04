@@ -49,6 +49,43 @@ _RESET = 1
 _CLOSE = 2
 _EXPLORE = 3
 
+import subprocess
+import os
+import signal
+import time
+
+# Global variable to keep track of the evaluation subprocess
+eval_process = None
+
+def manage_evaluation_process(episode_num=None):
+    global eval_process
+
+    # If there's an existing evaluation process, attempt to terminate it
+    if eval_process is not None:
+        # Send SIGINT to the process group to mimic Ctrl+C
+        os.killpg(os.getpgid(eval_process.pid), signal.SIGINT)
+
+        # Wait a bit for the process to terminate
+        try:
+            eval_process.wait(timeout=10)  # Wait up to 10 seconds for the process to exit
+        except subprocess.TimeoutExpired:
+            print("Evaluation process did not terminate gracefully, forcing it to stop...")
+            eval_process.kill()  # Forcefully terminate the process if it doesn't exit within the timeout
+            eval_process.wait()  # Wait for the kill to take effect
+
+        eval_process = None  # Reset the global variable after termination
+
+    # If episode_num is provided, start a new evaluation process
+    if episode_num is not None:
+        command = f'cd ~/catkin_ws/src/spot_bullet/src && python3.10 ./spot_ars_eval.py -a {episode_num} -hf'
+        # Use setsid to create a new session and make the subprocess the session leader
+        eval_process = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
+        print(f"Started new evaluation process for agent {episode_num}")
+
+    else:
+        command = f'cd ~/catkin_ws/src/spot_bullet/src && python3.10 ./spot_ars_eval.py -hf'
+        eval_process = subprocess.Popen(command, shell=True, preexec_fn=os.setsid)
+        print(f"Started new evaluation process")
 
 def main():
     """ The main() function. """
@@ -56,6 +93,9 @@ def main():
     mp.freeze_support()
 
     print("STARTING SPOT TRAINING ENV")
+
+    manage_evaluation_process()
+
     seed = 0
     if ARGS.Seed:
         seed = int(ARGS.Seed)
@@ -200,6 +240,7 @@ def main():
             if save_model:
                 agent.save(models_path + "/" + str(file_name) +
                            str(episode_num))
+            manage_evaluation_process(episode_num)
 
         episode_num += 1
 
