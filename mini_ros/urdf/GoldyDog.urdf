@@ -843,8 +843,6 @@
     <limit effort="4.0" lower="-1.04" upper="1.04" velocity="4.0"/>
     <joint_properties damping="0.0" friction="0.0"/>
   </joint>
-
-
   <link name="front_right_upper_leg">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.252 0.13 -0.053"/>
@@ -876,8 +874,6 @@
     <limit effort="4.0" lower="-1.57079632679" upper="2.59" velocity="4.0"/>
     <joint_properties damping="0.0" friction="0.0"/>
   </joint>
-
-
   <link name="front_right_upper_servo">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.252 0.13 -0.053"/>
@@ -901,8 +897,6 @@
     <parent link="front_right_upper_leg"/>
     <child link="front_right_upper_servo"/>
   </joint>
-
-
   <link name="front_right_upper_CFP">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.252 0.13 -0.053"/>
@@ -926,7 +920,6 @@
     <parent link="front_right_upper_leg"/>
     <child link="front_right_upper_CFP"/>
   </joint>
-
   <link name="front_right_lower_leg">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.0535"/>
@@ -958,7 +951,6 @@
     <limit effort="4.0" lower="-2.9" upper="1.57079632679" velocity="4.0"/>
     <joint_properties damping="0.0" friction="0.0"/>
   </joint>
-
   <link name="front_right_lower_servo">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.1375 0.18"/>
@@ -1005,8 +997,6 @@
     <parent link="front_right_lower_leg"/>
     <child link="front_right_lower_CFP"/>
   </joint>
-
-  
   <link name="front_right_lower_IMU">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.18"/>
@@ -1029,9 +1019,6 @@
     <parent link="front_right_lower_leg"/>
     <child link="front_right_lower_IMU"/>
   </joint>
-
-
-
   <link name="front_right_foot">
     <visual>
       <origin rpy="0 0 1.57079632679" xyz="-0.247 0.138 0.1535"/>
@@ -1310,9 +1297,7 @@
     <origin rpy="0 0 0" xyz="0 0 -0.1"/>
     <parent link="back_right_lower_leg"/>
     <child link="back_right_foot"/>
-  </joint>`
-
-
+  </joint>
   <joint name="base_base" type="fixed">
     <origin rpy="0 0 0" xyz="0 0 0"/>
     <parent link="base_link"/>
