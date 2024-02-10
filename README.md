@@ -157,7 +157,7 @@ source spot_mini_env/bin/activate
 ```
 
 ```bash
-python3 -m pip install -r spot_mini_mini/requirements.txt
+python3 -m pip install -r requirements.txt
 ```
 
 
