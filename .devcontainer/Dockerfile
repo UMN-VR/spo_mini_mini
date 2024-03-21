@@ -1,4 +1,5 @@
-FROM osrf/ros:melodic-desktop-full
+# FROM osrf/ros:melodic-desktop-full
+FROM ros:melodic-perception
 
 # Install P
 # compile python from source - avoid unsupported library problems 
