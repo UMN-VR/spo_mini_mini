@@ -4,13 +4,12 @@
     <param name="frequency" value="200.0" type="double"/>
   </node>
 
- <!-- Joystick Node DISABLED(using FOXGLOVE Joy publisher)-->
- 
-  <!-- <node respawn="true" pkg="joy"
+ <!-- Joystick Node -->
+  <node respawn="true" pkg="joy"
         type="joy_node" name="spot_joy" >
-    <param name="dev" type="string" value="/dev/input/js1" />
+    <param name="dev" type="string" value="/dev/input/js0" />
     <param name="deadzone" value="0.005" />
-  </node> -->
+  </node>
 
  <!-- Teleop Node -->
  <node name="spot_teleop" pkg="mini_ros" type="teleop_node" output="screen">
@@ -41,17 +40,11 @@
 <!-- the above is equivalent to $(eval agent_num) but I left it in to acknowledge that both options exist -->
 <node name="spot_real" pkg="mini_ros" type="spot_real_interface" output="screen"/>
 
-<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find mini_ros)/urdf/spot.urdf'" />
-
-<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-
-
 <!-- Sensor Interface Node -->
-
-<!-- <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
-    <param name="port" value="/dev/ttyS0"/>
-    <param name="baud" value="500000"/> 
-</node> -->
+<node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port" value="/dev/ttyS0"/> <!-- HW Serial -->
+    <param name="baud" value="500000"/>  <!-- must match Teensy -->
+  </node>
 
 
 <!-- NOTE:

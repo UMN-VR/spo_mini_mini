@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Joint Controller</title>
+    <script>
+    // Function to fetch and display joint angles
+    function fetchJointAngles() {
+        fetch('/get_joint_angles')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('angles_display').textContent = JSON.stringify(data.angles, null, 2);
+        });
+    }
+
+    function updateValue(name, value) {
+
+        console.log(name, value);
+        document.getElementById(name + "_value").textContent = value;
+
+        if (name === 'pca_frequency') {
+            fetch(`/update_setting?setting=pca_frequency&value=${value}`);
+        } else if (name === 'min_pulse') {
+            fetch(`/update_setting?setting=min_pulse&value=${value}`);
+        } else if (name === 'max_pulse') {
+            fetch(`/update_setting?setting=max_pulse&value=${value}`);
+        
+        // if name starts with servo
+        } else if (name.startsWith('servo')) {
+            fetch(`/update_joint?joint=${name}&angle=${value}`);
+        }
+
+        document.getElementById(name + "_value").textContent = value;
+        fetch("/update_joint?joint=" + name + "&angle=" + value);
+    }
+    
+    function fetchSettings() {
+        fetch('/get_settings')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('settings_display').textContent = JSON.stringify(data, null, 2);
+
+            // update the sliders
+            document.getElementById('pca_frequency').value = data.pca_frequency;
+            document.getElementById('min_pulse').value = data.min_pulse;
+            document.getElementById('max_pulse').value = data.max_pulse;
+
+            document.getElementById('pca_frequency_value').textContent = data.pca_frequency;
+            document.getElementById('min_pulse_value').textContent = data.min_pulse;
+            document.getElementById('max_pulse_value').textContent = data.max_pulse;
+            
+        });
+    }
+
+    function fetchDutyCycles() {
+        fetch('/get_duty_cycles')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('duty_cycles_display').textContent = JSON.stringify(data, null, 2);
+        });
+    }
+
+    // // BAD DUPLICATE FUNCTION
+    // function updateValue(name, value) {
+    //     document.getElementById(name + "_value").textContent = value;
+    //     fetch("/update_joint?joint=" + name + "&angle=" + value);
+    // }
+
+    function deactivateServos() {
+        fetch('/deactivate_servos')
+        .then(response => response.json())
+        .then(data => {
+            alert('Servos deactivated!');
+        });
+    }
+
+    function shutdownServer() {
+        fetch('/shutdown')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Server shutting down. Please close the window.');
+            } else {
+                alert('Failed to shutdown the server: ' + data.message);
+            }
+        });
+    }
+        
+    // Polling function to update joint angles every second
+    setInterval(fetchJointAngles, 1000);
+    setInterval(fetchSettings, 1000);
+    setInterval(fetchDutyCycles, 1000);
+    </script>
+</head>
+<body>
+    <h2>Joint Control Sliders</h2>
+
+
+    <button onclick="deactivateServos()">Deactivate All Servos</button>
+
+    <button onclick="shutdownServer()">Shutdown Server</button>
+
+    <br>
+
+    <h2>Joint 0</h2>
+    <input type="range" id="servo0" name="servo0" min="-180" max="180" value="0" oninput="updateValue(this.name, this.value)" width="200%">
+    <span id="servo0_value">0</span> degrees
+
+
+    <p>Joint Angles (degrees):<br><pre id="angles_display">Fetching...</pre></p>
+    <p>PCA9685 duty_cycle (degrees):<br><pre id="duty_cycles_display">Fetching...</pre></p>
+    <h2>Servo Adjustment Sliders</h2>
+    PCA Frequency (Hz): <input type="range" id="pca_frequency" name="pca_frequency" min="25" max="120" value="50" oninput="updateValue(this.name, this.value)">
+    <span id="pca_frequency_value">50</span> Hz<br>
+
+    Servo Pulse Range min (μs): <input type="range" id="min_pulse" name="min_pulse" min="400" max="4000" value="500" oninput="updateValue(this.name, this.value)">
+    <span id="min_pulse_value">500</span> μs<br>
+
+    Servo Pulse Range max (μs): <input type="range" id="max_pulse" name="max_pulse" min="2000" max="65535" value="2500" oninput="updateValue(this.name, this.value)">
+    <span id="max_pulse_value">2500</span> μs<br>
+
+    <p>Settings:<br><pre id="settings_display">Fetching...</pre></p>
+</body>
+</html>

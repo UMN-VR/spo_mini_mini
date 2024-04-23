@@ -5,10 +5,15 @@
     "--privileged",
     "--network=host",
     "-e","DISPLAY=:0",
-    "-v", "/tmp/.X11-unix:/tmp/.X11-unix:ro"
+    "-v", "/tmp/.X11-unix:/tmvzp/.X11-unix:ro",
+    "-v", "/dev/i2c-1:/dev/i2c-0",
+    "-v", "/dev/i2c-1:/dev/i2c-1",
+    "-v", "/dev/i2c-1:/dev/i2c-2",
+    "-v", "/dev/input/js1:/dev/input/js1"
+    
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/home/vscode/catkin_ws/src,type=bind",
-  "workspaceFolder": "/catkin_ws/home/vscode/src",
+  "workspaceFolder": "/home/vscode/catkin_ws/src",
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.bash_history,target=/home/vscode/.bash_history,type=bind"
   ]

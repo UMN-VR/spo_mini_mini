@@ -22,7 +22,9 @@ p.resetDebugVisualizerCamera(cameraDistance=0.8,
                              cameraYaw=45,
                              cameraPitch=-30,
                              cameraTargetPosition=[0, 0, 0])
-boxId = p.loadURDF(pd.getDataPath() + "/assets/urdf/spot.urdf",
+URDF_path = pd.getDataPath() + "/assets/urdf/spot.urdf"
+print(f"URDF_PATH: {URDF_path}")
+boxId = p.loadURDF(URDF_path,
                    StartPos,
                    StartOrientation,
                    flags=p.URDF_USE_SELF_COLLISION_EXCLUDE_PARENT)

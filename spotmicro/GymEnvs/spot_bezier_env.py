@@ -2,6 +2,10 @@
 """
 import math
 import time
+import sys
+print(sys.version)
+
+#import gymnasium as gym
 import gym
 import numpy as np
 import pybullet

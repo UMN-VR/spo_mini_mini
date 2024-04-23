@@ -1,5 +1,10 @@
 Note: This is a fork of the original Spot Mini Mini repository. The original repository can be found [here](https://github.com/OpenQuadruped/spot_mini_mini).
 
+
+sudo python3.10 -m pip install -r requirements.txt 
+
+sudo chmod a+rw /dev/input/js1
+
 [OpenQuadruped/spot_mini_mini](https://github.com/OpenQuadruped/spot_mini_mini) was mostly developed by Maurice Rahme ([github.com/moribots](https://github.com/moribots)), Ian Abraham ([github.com/i-abr](https://github.com/i-abr)), Matthew Elwin ([github.com/m-elwin](https://github.com/m-elwin)) and Todd Murphey ([github.com/toddmurphey](https://github.com/MurpheyLab)).
 ## Spot Mini Mini OpenAI Gym Environment
 

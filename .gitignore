@@ -7,3 +7,5 @@ build/
 _build/
 *.pyc
 tsts.md
+chatGPT/
+oai.md

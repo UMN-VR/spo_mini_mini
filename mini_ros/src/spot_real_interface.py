@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.10
+#!/usr/bin/env python
 """
 DESCRIPTION:
 
@@ -15,50 +15,6 @@ import os
 import rospkg
 rospack = rospkg.RosPack()
 
-# from adafruit_servokit import ServoKit
-# kit = ServoKit(channels=16)
-
-import board
-from adafruit_motor import servo
-from adafruit_pca9685 import PCA9685
-import adafruit_tca9548a
-
-
-
-
-
-# # first I2C bus
-# I2C1 = board.I2C()
-
-# # #second I2C bus
-# I2C2 = board.I2C( '/dev/i2c-2')
-from smbus2 import SMBus
-
-# Initialize I2C buses using smbus2
-I2C1 = SMBus(1)  # for '/dev/i2c-0'
-# bus1 = SMBus(1)  # for '/dev/i2c-1' which might not be necessary if you're already using board.I2C()
-# bus2 = SMBus(2)  # for '/dev/i2c-2'
-
-
-# # # Create a TCA9546a instance 
-# # I2C1_TCA9685 = adafruit_tca9548a.PCA9546A(I2C1)
-
-# # Set the TCA9546a channel to 0 before initializing the PCA9685
-# print("Setting TCA9546a channel to 0")
-
-# I2C1_TCA9685[0].unlock()
-
-# if I2C1_TCA9685[0].try_lock():
-#     print("Channel {}:".format(0), end="")
-#     addresses = I2C1_TCA9685[0].scan()
-#     print([hex(address) for address in addresses if address != 0x70])
-
-#     I2C1_TCA9685[0].unlock()
-
-# Create a PCA9685 instance
-# I2C1_PCA9685 = PCA9685(I2C1_TCA9685[0])
-I2C1_PCA9685 = PCA9685(I2C1)
-
 sys.path.append(rospack.get_path('mini_ros') + '/../')
 
 sys.path.append('../../')
@@ -67,9 +23,6 @@ from spotmicro.Kinematics.SpotKinematics import SpotModel
 from spotmicro.GaitGenerator.Bezier import BezierGait
 from spot_bullet.src.ars_lib.ars import ARSAgent, Normalizer, Policy
 from spotmicro.GymEnvs.spot_bezier_env import spotBezierEnv
-
-from sensor_msgs.msg import JointState
-
 
 # Initialize Node
 rospy.init_node('Policies', anonymous=True)
@@ -92,90 +45,6 @@ alpha = rospy.get_param("alpha")
 # Added this to avoid filtering residuals
 # -1 for all
 actions_to_filter = rospy.get_param("actions_to_filter")
-
-
-
-PCA_9685_DUTY_CYCLES = [
-    None,  # 0
-    None,  # 1
-    None,  # 2
-    None,  # 3
-    None,  # 4
-    None,  # 5
-    None,  # 6
-    None,  # 7
-    None,  # 8
-    None,  # 9
-    None,  # 10
-    None,  # 11
-    None,  # 12
-    None,  # 13
-    None,  # 14
-    None,  # 15
-]
-
-
-from flask import Flask, jsonify, request, render_template
-# from flask import Flask, jsonify, request
-from flask_cors import CORS
-
-
-app = Flask(__name__, template_folder='/home/vscode/catkin_ws/src/mini_ros/src/templates')
-
-# app = Flask(__name__)
-CORS(app)  # This is optional, used for cross-origin requests if accessing the web server from another domain
-current_joint_angles = [[0 for _ in range(3)] for _ in range(4)]  # Default to a 4x3 array of zeros
-
-
-current_settings = {
-    "pca_frequency": 50,
-    "min_pulse": 500,
-    "max_pulse": 2500
-}
-
-@app.route('/get_duty_cycles')
-def get_duty_cycles():
-    print(F"@get_duty_cycles():")
-    return jsonify(PCA_9685_DUTY_CYCLES)
-
-@app.route('/get_settings')
-def get_settings():
-    print(f"@get_settings(): {current_settings}")
-    return jsonify(current_settings)
-
-@app.route('/update_setting')
-def update_setting():
-    
-    setting = request.args.get('setting', type=str)
-    value = request.args.get('value', type=int)
-
-    print(f"@update_setting(): {setting} = {value}")
-    global current_settings
-    current_settings[setting] = value # update the setting in the dictionary
-    # Add here the actual code to update the hardware settings
-    # Example:
-    if setting == "pca_frequency":
-        I2C1_PCA9685.frequency = value
-        current_settings[setting] = value
-    elif setting == "min_pulse" or setting == "max_pulse":
-        # Update your servo configuration
-        current_settings[setting] = value
-    
-    return jsonify(success=True, setting=setting, value=value)
-
-
-@app.route('/deactivate_servos')
-def deactivate_servos():
-    # Assuming 'kit' is your ServoKit instance and it has been initialized
-    print(f"@deactivate_servos():")
-    try:
-        for i in range(16):  # Assuming a 16-channel PCA9685
-            # kit.servo[i].angle = None
-            PCA_9685_DUTY_CYCLES[i] = 0
-            I2C1_PCA9685.channels[i].duty_cycle = 0  # Set the duty cycle to 0
-        return jsonify(success=True, message="All servos deactivated.")
-    except Exception as e:
-        return jsonify(success=False, message=str(e))
 
 
 class SpotCommander():
@@ -262,9 +131,6 @@ class SpotCommander():
                                         queue_size=1)
         self.ag_pub = rospy.Publisher('spot/agent', AgentData, queue_size=1)
         self.ja_pub = rospy.Publisher('spot/joints', JointAngles, queue_size=1)
-
-        self.js_pub = rospy.Publisher('/joint_states', JointState, queue_size=10)
-
         print("READY TO GO!")
 
     def load_spot(self, contacts, state_dim=12, action_dim=14, agent_num=0):
@@ -504,205 +370,19 @@ class SpotCommander():
         self.ja_pub.publish(ja_msg)
 
 
-         #joint_names based on the URDF provided
-        joint_names = [
-            'motor_front_left_hip', 'motor_front_left_upper_leg', 'motor_front_left_lower_leg',
-            'motor_front_right_hip', 'motor_front_right_upper_leg', 'motor_front_right_lower_leg',
-            'motor_back_left_hip', 'motor_back_left_upper_leg', 'motor_back_left_lower_leg',
-            'motor_back_right_hip', 'motor_back_right_upper_leg', 'motor_back_right_lower_leg']
-
-
-        # Creating a JointState message
-        js_msg = JointState()
-        js_msg.header.stamp = rospy.Time.now()
-        js_msg.name = joint_names
-
-
-
-        
-        # BAD, DO NOT USE RADIANS
-        #TODO
-        js_msg.position = [np.radians(angle* 56) for sublist in joint_angles for angle in sublist]  # Flatten and convert to radians if necessary
-        #js_msg.position = [angle for sublist in joint_angles for angle in sublist]
-
-        # Publishing the JointState message
-        self.js_pub.publish(js_msg)
-
-
-
-
-
-        global current_joint_angles
-        current_joint_angles = copy.deepcopy(joint_angles)
-
-
-@app.route('/')
-def index():
-
-    # Print working directory
-
-    print(f"@index(): pwd: {os.getcwd()}")
-
-    return render_template('index.html')
-
-
-from flask import request
-
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    try:
-        # Here you could also add any clean-up code for your hardware or ROS nodes
-        shutdown_function = request.environ.get('werkzeug.server.shutdown')
-        if shutdown_function is None:
-            raise RuntimeError('Not running with the Werkzeug Server')
-        shutdown_function()
-
-        rospy.signal_shutdown("Server shutting down...")
-
-        deactivate_servos()
-
-
-        return jsonify(success=True, message="Server shutting down...")
-    except Exception as e:
-        return jsonify(success=False, message=str(e))
-
-
-
-def map_angle_deg_to_duty_cycle(angle):
-    # Maps the angle to the duty cycle based on the min_pulse and max_pulse from current_settings
-
-
-    min_angle = -180
-    max_angle = 180
-
-    min_pulse = current_settings.get('min_pulse')
-    max_pulse = current_settings.get('max_pulse')
-
-    # Map the angle to the duty cycle
-    duty_cycle = (angle - min_angle) * (max_pulse - min_pulse) / (max_angle - min_angle) + min_pulse
-    return duty_cycle
-
-
-
-
-
-@app.route('/update_joint')
-def update_joint():
-    joint = request.args.get('joint')
-    angle = float(request.args.get('angle'))
-    # Convert the angle to radians or process it as required
-    # Then publish it to ROS topic as needed
-
-
-    print(f"Updating {joint} to {angle} degrees")  # Placeholder, replace with actual publish code
-
-    # I2C1_TCA9685[0]
-
-    if I2C1_TCA9685[0].try_lock():
-        print("Channel {}:".format(0), end="")
-        addresses = I2C1_TCA9685[0].scan()
-        print([hex(address) for address in addresses if address != 0x70])
-
-        # Determine the channel based on joint name
-        channel_map = {'servo0': 0}  # Extend this dictionary as per your setup
-        if joint in channel_map:
-            #kit.servo[channel_map[joint]].angle = angle
-            duty_cycle = map_angle_deg_to_duty_cycle(angle)
-            channel_num = channel_map[joint]
-            PCA_9685_DUTY_CYCLES[channel_num] = duty_cycle
-            I2C1_PCA9685.channels[channel_num].duty_cycle = int(duty_cycle)  # Convert ms to ns
-        
-            return jsonify(success=True)
-
-            I2C1_TCA9685[0].unlock()
-        
-        else:
-            return jsonify(success=False, message="Invalid joint name")
-    
-    else:
-        return jsonify(success=False, message="Failed to lock I2C bus")
-
-    
-
-
-from threading import Thread
-
-def run_app():
-    print(f"@run_app(): Running Flask app...")
-    app.run(host='0.0.0.0', port=8080, debug=True, use_reloader=False)  # Changed port to 8080
-
-    #app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)  # Adjust host and port as needed
-
-@app.route('/get_joint_angles')
-def get_joint_angles():
-    print(F"@get_joint_angles():")
-
-    global current_joint_angles
-    if current_joint_angles is not None:
-        # Assuming joint_angles structure is list of lists or numpy array; adjust conversion as necessary
-        angles_deg = [np.degrees(angle).tolist() for angle in current_joint_angles]
-        return jsonify(angles=angles_deg)
-    return jsonify(error="Joint angles not available"), 404
-
-
-from mpu6050 import mpu6050
-import time
-
-sensor = mpu6050(0x68)  # Assuming 0x68 is the I2C address of the MPU6050
-
-
-def get_sensor_data():
-    accelerometer_data = sensor.get_accel_data()
-    gyro_data = sensor.get_gyro_data()
-
-    # round to 2 decimal places
-    #accelerometer_data = {k: round(v, 2) for k, v in accelerometer_data.items()}
-
-    #format accelerometer_data as (+/-)XX.XX
-    accelerometer_data_str = {k: f"{v:+.2f}" for k, v in accelerometer_data.items()}
-
-    #format gyro_data as (+/-)XXX.XX
-    gyro_data_str = {k: f"{v:+.2f}" for k, v in gyro_data.items()}
-    
-    print(f"Acc: {accelerometer_data_str} Gyro: {gyro_data_str}")
-
-
-# import time
-# import board
-# import adafruit_mpu6050
-
-# # TCA548A_0_MPU6050_0 = adafruit_mpu6050.MPU6050(I2C1_TCA9685[0])
-# MPU6050_0 = adafruit_mpu6050.MPU6050(I2C1)
-
-# i_imu = 0
-# def get_sensor_data():
-#     i_imu += 1
-
-#     try:
-#         print("Acceleration: X:%.2f, Y: %.2f, Z: %.2f m/s^2"%(TCA548A_0_MPU6050_0.acceleration))
-#         print("Gyro X:%.2f, Y: %.2f, Z: %.2f degrees/s"%(TCA548A_0_MPU6050_0.gyro))
-#         print("Temperature: %.2f C"%TCA548A_0_MPU6050_0.temperature)
-#         print("i_imu: ", i_imu)
-#     except Exception as e:
-#         print(f"Error reading sensor data: {str(e)}")
-
-
 def main():
     """ The main() function. """
-    print("Starting SpotCommander Node")
     mini_commander = SpotCommander()
     rate = rospy.Rate(600.0)
     while not rospy.is_shutdown():
         # This is called continuously. Has timeout functionality too
         mini_commander.move()
-        get_sensor_data()
         rate.sleep()
         # rospy.spin()
 
 
 if __name__ == '__main__':
     try:
-        Thread(target=run_app).start()
         main()
     except rospy.ROSInterruptException:
         pass

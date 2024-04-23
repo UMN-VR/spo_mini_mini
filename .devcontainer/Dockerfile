@@ -66,3 +66,42 @@ RUN sudo apt install -y ros-melodic-joint-state-publisher-gui
 # source the virtual environment 
 RUN echo "source ~/catkin_ws/src/spot_mini_env/bin/activate" >> ~/.bashrc
 
+
+
+
+# Install dependencies for i2c and the Adafruit libraries
+RUN sudo apt-get update && sudo apt-get install -y i2c-tools python3-pip libi2c-dev python3-smbus
+
+# Install Adafruit libraries for CircuitPython
+RUN sudo python3.10 -m pip install adafruit-circuitpython-servokit
+
+# Install libgpiod2 for GPIO access
+#RUN sudo apt-get install -y libgpiod2
+RUN sudo apt-get install -y libgpiod1
+
+# Install Python bindings for libgpiod
+RUN  sudo python3.10 -m pip install gpiod
+
+# Install ROS Joy
+RUN sudo apt-get install -y ros-melodic-joy
+
+# Install foxglove bridge
+RUN sudo apt install ros-$ROS_DISTRO-foxglove-bridge -y
+
+# Install ROS Melodic xacro
+RUN sudo apt-get install ros-melodic-xacro -y
+
+RUN sudo apt-get install ros-melodic-robot-state-publisher -y
+
+# install MPU6050 library
+RUN sudo apt-get install -y ros-melodic-imu-filter-madgwick
+# Install 
+RUN sudo python3.10 -m pip install mpu6050-raspberrypi smbus 
+
+RUN sudo python3.10 -m pip install adafruit-circuitpython-tca9548a
+
+RUN sudo python3.10 -m pip install pyYAML
+
+RUN sudo python3.10 -m pip install flask_cors
+
+RUN sudo python3.10 -m pip install mpu6050-raspberrypi smbus

@@ -370,16 +370,19 @@ class Spot(object):
         else:
             init_position = INIT_POSITION
 
+        robot_URDF_path = pybullet_data.getDataPath() + "/assets/urdf/spot.urdf"
+        print(f"@spot.py:{robot_URDF_path}")
+
         if reload_urdf:
             if self._self_collision_enabled:
                 self.quadruped = self._pybullet_client.loadURDF(
-                    pybullet_data.getDataPath() + "/assets/urdf/spot.urdf",
+                    robot_URDF_path,
                     init_position,
                     useFixedBase=self._on_rack,
                     flags=self._pybullet_client.URDF_USE_SELF_COLLISION_EXCLUDE_PARENT)
             else:
                 self.quadruped = self._pybullet_client.loadURDF(
-                    pybullet_data.getDataPath() + "/assets/urdf/spot.urdf",
+                    robot_URDF_path,
                     init_position,
                     INIT_ORIENTATION,
                     useFixedBase=self._on_rack)
@@ -668,7 +671,13 @@ class Spot(object):
         self.prev_ang_twist = ang_twist
 
         # Get Contacts
-        CONTACT = list(self._pybullet_client.getContactPoints(self.quadruped))
+        #CONTACT = list(self._pybullet_client.getContactPoints(self.quadruped))
+
+        raw_contact_points = self._pybullet_client.getContactPoints(self.quadruped)
+        if raw_contact_points is not None:
+            CONTACT = list(raw_contact_points)
+        else:
+            CONTACT = []
 
         FLC = 0
         FRC = 0
