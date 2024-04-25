@@ -33,9 +33,13 @@ import adafruit_tca9548a
 # # #second I2C bus
 # I2C2 = board.I2C( '/dev/i2c-2')
 from smbus2 import SMBus
+import busio
+
+#I2C1 = busio.I2C(board.SCL, board.SDA)
+I2C2 = busio.I2C(board.I2C1_SDA, board.I2C1_SCL)
 
 # Initialize I2C buses using smbus2
-I2C1 = SMBus(1)  # for '/dev/i2c-0'
+# I2C1 = SMBus(1)  # for '/dev/i2c-0'
 # bus1 = SMBus(1)  # for '/dev/i2c-1' which might not be necessary if you're already using board.I2C()
 # bus2 = SMBus(2)  # for '/dev/i2c-2'
 
